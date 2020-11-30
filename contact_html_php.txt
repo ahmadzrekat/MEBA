@@ -1,0 +1,124 @@
+<?php
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        
+        $user=filter_var($_POST['username'],FILTER_SANITIZE_STRING);
+        $mail=filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+        $cell=filter_var($_POST['cellphone'],FILTER_SANITIZE_NUMBER_INT);
+        $msg=filter_var($_POST['message'],FILTER_SANITIZE_STRING);
+        
+        
+
+        $formErrors=array();
+        
+        if(strlen($user)<=3){      
+            $formErrors[]='Username Must be Larger Than <strong>3</strong> characters';
+        }
+        
+        if(strlen($msg)<10){           
+            $formErrors[]='Message can\'t be Less Than <strong>10</strong> characters';
+        }
+        
+        $headers = 'Form: '.$mail . '\r\n';
+        $myEmail = 'bhaael@ac.sce.ac.il';
+        $subject='Contact Form';
+        if(empty($formErrors)){
+            
+            mail($myEmail, $subject, $msg, $headers);
+            $user='';
+            $mail='';
+            $cell='';
+            $msg='';
+            $success='<div class="alert alert-success">We Have Recieved Your Massage</div>';
+            
+        }
+
+    }
+
+?>
+
+
+
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MEBA</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="css/contact.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=raleway:400,700,900i">
+    </head>
+    <body>
+        
+        <div class="container">
+            <br>
+            <br>
+            <h1 class="text-center">Contact Me</h1>
+            <form class="contact-form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                
+                <?php if(!empty($formErrors)){?>
+                            <div class="alert alert-danger alert-dismissible" role="start">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                <?php
+                        foreach($formErrors as $error){
+                            echo $error.'<br/>';
+                        }
+                        ?>
+                         </div>        
+                    <?php } ?>
+                
+                <?php if (isset($success)){echo $success;} ?>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="username" placeholder="Type Your Username" value="<?php if (isset($user)) {echo $user;}   ?>" />
+                    <i class="fa fa-user fa-fw"></i>
+                    <span class="asterisx">*</span>
+                </div>
+                
+                <div class="form-group">
+                    <input class="form-control" type="email" name="email" placeholder="Type a Valid Email" value="<?php if (isset($mail)) {echo $mail;}   ?>"/>
+                    <i class="fa fa-envelope fa-fw"></i>
+                    <span class="asterisx">*</span>
+                </div>
+                
+                <input class="form-control" type="text" name="cellphone" placeholder="Type Your Cell Phone" value="<?php if (isset($cell)) {echo $cell;}   ?>" />
+                <i class="fa fa-phone fa-fw"></i>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Your Message!" name="message"><?php if (isset($msg)) {echo $msg;}   ?></textarea>
+                    <input class="btn btn-success btn-block" type="submit" value="Send Message" />
+                    <i class="fa fa-send fa-fw send-icon"></i>
+                    <span class="asterisx">*</span>
+                </div>
+                
+            </form>
+        </div>
+        
+        
+        
+        <script src="js/jquery-1.12.4.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#myPage">Home</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    
+    </body>
+
+</html>
