@@ -6,20 +6,20 @@ if (isset($_POST['uname']) && isset($_POST['password']))
      $pass = $_POST['password'];
 
      if (empty($uname)) {
-          header("Location: login_employee.php?error=User Name is required");
+          header("Location: login_admin.php?error=User Name is required");
          exit();
      }else if(empty($pass)){
-        header("Location: login_employee.php?error=Password is required");
+        header("Location: login_admin.php?error=Password is required");
          exit();
      }else{
-	$username="delivery";
+	$username="admin";
 	$password="123";
 	if($_POST['uname']==$username && $_POST['password']==$password) {
 		$_SESSION['uname']=$username;
-		header('location:employee.php');
+		header('location:Admin.php');
 		}
 	else{
-		header("Location: login_employee.php?error=password or user name is no correct");
+		header("Location: login_admin.php?error=password or user name is no correct");
 		}
 	}
 	}
